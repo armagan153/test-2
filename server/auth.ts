@@ -5,7 +5,7 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { users, insertUserSchema, type User as SelectUser } from "@db/schema";
+import { users, insertUserSchema, type User } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
 
@@ -30,7 +30,7 @@ const crypto = {
 
 declare global {
   namespace Express {
-    interface User extends SelectUser { }
+    interface User extends User { }
   }
 }
 
@@ -125,7 +125,8 @@ export function setupAuth(app: Express) {
         .values({
           username,
           password: hashedPassword,
-          role: "admin"
+          role: "admin",
+          createdAt: new Date()
         })
         .returning();
 
@@ -135,7 +136,7 @@ export function setupAuth(app: Express) {
         }
         return res.json({
           message: "Kayıt başarılı",
-          user: { id: newUser.id, username: newUser.username, role: newUser.role },
+          user: newUser,
         });
       });
     } catch (error) {
@@ -167,7 +168,7 @@ export function setupAuth(app: Express) {
 
         return res.json({
           message: "Giriş başarılı",
-          user: { id: user.id, username: user.username, role: user.role },
+          user: user,
         });
       });
     };
