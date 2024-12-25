@@ -1,8 +1,12 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Link } from "wouter";
 import { Loader2 } from "lucide-react";
 import { useUser } from "./hooks/use-user";
 import { Card, CardContent } from "./components/ui/card";
 import { AlertCircle } from "lucide-react";
+import { Layout } from "lucide-react";
+import { Users } from "lucide-react";
+import { PhoneCall } from "lucide-react";
+import { ListTodo } from "lucide-react";
 
 // Page imports
 import AuthPage from "./pages/AuthPage";
@@ -33,19 +37,31 @@ function App() {
         <div className="p-6">
           <h1 className="text-xl font-bold">Çağrı Merkezi CRM</h1>
         </div>
-        <nav className="px-4">
-          <a href="/" className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
-            Gösterge Paneli
-          </a>
-          <a href="/customers" className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
-            Müşteriler
-          </a>
-          <a href="/calls" className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
-            Çağrılar
-          </a>
-          <a href="/tasks" className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
-            Görevler
-          </a>
+        <nav className="px-4 space-y-2">
+          <Link href="/">
+            <a className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
+              <Layout className="h-4 w-4 mr-2" />
+              Gösterge Paneli
+            </a>
+          </Link>
+          <Link href="/customers">
+            <a className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
+              <Users className="h-4 w-4 mr-2" />
+              Müşteriler
+            </a>
+          </Link>
+          <Link href="/calls">
+            <a className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
+              <PhoneCall className="h-4 w-4 mr-2" />
+              Çağrılar
+            </a>
+          </Link>
+          <Link href="/tasks">
+            <a className="flex items-center px-4 py-2 text-sm rounded-md hover:bg-accent">
+              <ListTodo className="h-4 w-4 mr-2" />
+              Görevler
+            </a>
+          </Link>
         </nav>
       </aside>
 
