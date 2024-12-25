@@ -34,17 +34,19 @@ import type { Call, Customer } from "@db/schema";
 import { format } from "date-fns";
 import { useUser } from "@/hooks/use-user";
 
+type CallStatus = "completed" | "missed" | "followup";
+
 const statusColors = {
   completed: "bg-green-100 text-green-800",
   missed: "bg-red-100 text-red-800",
   followup: "bg-yellow-100 text-yellow-800",
-};
+} as const;
 
 const statusNames = {
   completed: "Tamamlandı",
   missed: "Cevapsız",
-  followup: "Takip Gerekli"
-};
+  followup: "Takip Gerekli",
+} as const;
 
 export default function Calls() {
   const { toast } = useToast();
@@ -95,7 +97,7 @@ export default function Calls() {
       agentId: user!.id,
       notes: formData.get("notes") as string,
       duration: parseInt(formData.get("duration") as string),
-      status: formData.get("status") as string,
+      status: formData.get("status") as CallStatus,
     });
   }
 
@@ -192,9 +194,9 @@ export default function Calls() {
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className={statusColors[call.status as keyof typeof statusColors]}
+                      className={statusColors[call.status as CallStatus]}
                     >
-                      {statusNames[call.status as keyof typeof statusNames]}
+                      {statusNames[call.status as CallStatus]}
                     </Badge>
                   </TableCell>
                   <TableCell>

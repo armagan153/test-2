@@ -110,15 +110,15 @@ export default function Tasks() {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const dueDate = formData.get("dueDate") as string;
+    const dueDateStr = formData.get("dueDate") as string;
 
     addTask.mutate({
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       assignedTo: user!.id,
-      customerId: parseInt(formData.get("customerId") as string),
-      status: "pending",
-      dueDate: dueDate ? new Date(dueDate).toISOString() : undefined,
+      customerId: formData.get("customerId") ? parseInt(formData.get("customerId") as string) : undefined,
+      status: "pending" as const,
+      dueDate: dueDateStr ? new Date(dueDateStr) : null,
     });
   }
 

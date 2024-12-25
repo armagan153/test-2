@@ -1,13 +1,15 @@
 import { Switch, Route } from "wouter";
 import { Loader2 } from "lucide-react";
+import { useUser } from "./hooks/use-user";
+import { Card, CardContent } from "./components/ui/card";
+import { AlertCircle } from "lucide-react";
+
+// Page imports
 import AuthPage from "./pages/AuthPage";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers"; 
 import Calls from "./pages/Calls";
 import Tasks from "./pages/Tasks";
-import { useUser } from "./hooks/use-user";
-import { Card, CardContent } from "./components/ui/card";
-import { AlertCircle } from "lucide-react";
 
 function App() {
   const { user, isLoading } = useUser();
