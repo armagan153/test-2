@@ -37,11 +37,16 @@ export default function AuthPage() {
       if (!result.ok) {
         throw new Error(result.message);
       }
+
       toast({
         title: isRegister ? "Kayıt başarılı" : "Giriş başarılı",
         description: `Hoş geldiniz, ${values.username}!`,
       });
-      setLocation("/"); // Ana sayfaya yönlendir
+
+      // Kullanıcı girişi başarılı olduktan sonra ana sayfaya yönlendir
+      setTimeout(() => {
+        setLocation("/");
+      }, 500);
     } catch (error: any) {
       toast({
         variant: "destructive",

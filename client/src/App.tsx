@@ -1,6 +1,6 @@
 import { Switch, Route, Link } from "wouter";
 import { Loader2 } from "lucide-react";
-import { useUser } from "./hooks/use-user";
+import { useUser } from "@/hooks/use-user";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, Layout, Users, PhoneCall, ListTodo } from "lucide-react";
 
@@ -67,6 +67,7 @@ function App() {
   );
 }
 
+// fallback 404 not found page
 function NotFound() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
