@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { useUser } from "@/hooks/use-user";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,7 @@ export default function AuthPage() {
   const { login, register } = useUser();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [, setLocation] = useLocation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,6 +41,7 @@ export default function AuthPage() {
         title: isRegister ? "Kayıt başarılı" : "Giriş başarılı",
         description: `Hoş geldiniz, ${values.username}!`,
       });
+      setLocation("/"); // Ana sayfaya yönlendir
     } catch (error: any) {
       toast({
         variant: "destructive",
