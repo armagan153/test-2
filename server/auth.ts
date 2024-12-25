@@ -28,7 +28,6 @@ const crypto = {
   },
 };
 
-// extend express user object with our schema
 declare global {
   namespace Express {
     interface User extends SelectUser { }
@@ -43,7 +42,7 @@ export function setupAuth(app: Express) {
     saveUninitialized: false,
     cookie: {},
     store: new MemoryStore({
-      checkPeriod: 86400000, // prune expired entries every 24h
+      checkPeriod: 86400000,
     }),
   };
 
@@ -68,11 +67,11 @@ export function setupAuth(app: Express) {
           .limit(1);
 
         if (!user) {
-          return done(null, false, { message: "Incorrect username." });
+          return done(null, false, { message: "Kullanıcı adı bulunamadı." });
         }
         const isMatch = await crypto.compare(password, user.password);
         if (!isMatch) {
-          return done(null, false, { message: "Incorrect password." });
+          return done(null, false, { message: "Şifre hatalı." });
         }
         return done(null, user);
       } catch (err) {
@@ -104,12 +103,11 @@ export function setupAuth(app: Express) {
       if (!result.success) {
         return res
           .status(400)
-          .send("Invalid input: " + result.error.issues.map(i => i.message).join(", "));
+          .send("Geçersiz giriş: " + result.error.issues.map(i => i.message).join(", "));
       }
 
       const { username, password } = result.data;
 
-      // Check if user already exists
       const [existingUser] = await db
         .select()
         .from(users)
@@ -117,29 +115,26 @@ export function setupAuth(app: Express) {
         .limit(1);
 
       if (existingUser) {
-        return res.status(400).send("Username already exists");
+        return res.status(400).send("Bu kullanıcı adı zaten kullanılıyor");
       }
 
-      // Hash the password
       const hashedPassword = await crypto.hash(password);
 
-      // Create the new user
       const [newUser] = await db
         .insert(users)
         .values({
           username,
           password: hashedPassword,
-          role: "admin" // İlk kullanıcıyı admin olarak oluştur
+          role: "admin"
         })
         .returning();
 
-      // Log the user in after registration
       req.login(newUser, (err) => {
         if (err) {
           return next(err);
         }
         return res.json({
-          message: "Registration successful",
+          message: "Kayıt başarılı",
           user: { id: newUser.id, username: newUser.username, role: newUser.role },
         });
       });
@@ -153,7 +148,7 @@ export function setupAuth(app: Express) {
     if (!result.success) {
       return res
         .status(400)
-        .send("Invalid input: " + result.error.issues.map(i => i.message).join(", "));
+        .send("Geçersiz giriş: " + result.error.issues.map(i => i.message).join(", "));
     }
 
     const cb = (err: any, user: Express.User, info: IVerifyOptions) => {
@@ -162,7 +157,7 @@ export function setupAuth(app: Express) {
       }
 
       if (!user) {
-        return res.status(400).send(info.message ?? "Login failed");
+        return res.status(400).send(info.message ?? "Giriş başarısız");
       }
 
       req.logIn(user, (err) => {
@@ -171,7 +166,7 @@ export function setupAuth(app: Express) {
         }
 
         return res.json({
-          message: "Login successful",
+          message: "Giriş başarılı",
           user: { id: user.id, username: user.username, role: user.role },
         });
       });
@@ -182,10 +177,10 @@ export function setupAuth(app: Express) {
   app.post("/api/logout", (req, res) => {
     req.logout((err) => {
       if (err) {
-        return res.status(500).send("Logout failed");
+        return res.status(500).send("Çıkış başarısız");
       }
 
-      res.json({ message: "Logout successful" });
+      res.json({ message: "Çıkış başarılı" });
     });
   });
 
@@ -194,6 +189,6 @@ export function setupAuth(app: Express) {
       return res.json(req.user);
     }
 
-    res.status(401).send("Not logged in");
+    res.status(401).send("Giriş yapılmamış");
   });
 }

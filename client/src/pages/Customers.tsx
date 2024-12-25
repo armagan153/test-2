@@ -42,21 +42,21 @@ export default function Customers() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("Failed to add customer");
+      if (!response.ok) throw new Error("Müşteri eklenirken bir hata oluştu");
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/customers"] });
       setIsOpen(false);
       toast({
-        title: "Success",
-        description: "Customer added successfully",
+        title: "Başarılı",
+        description: "Müşteri başarıyla eklendi",
       });
     },
     onError: (error: Error) => {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Hata",
         description: error.message,
       });
     },
@@ -80,37 +80,37 @@ export default function Customers() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Customers</h1>
+        <h1 className="text-2xl font-bold">Müşteriler</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button>
               <UserPlus className="h-4 w-4 mr-2" />
-              Add Customer
+              Müşteri Ekle
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Customer</DialogTitle>
+              <DialogTitle>Yeni Müşteri Ekle</DialogTitle>
             </DialogHeader>
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Ad Soyad</Label>
                 <Input id="name" name="name" required />
               </div>
               <div>
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">E-posta</Label>
                 <Input id="email" name="email" type="email" />
               </div>
               <div>
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone">Telefon</Label>
                 <Input id="phone" name="phone" />
               </div>
               <div>
-                <Label htmlFor="notes">Notes</Label>
+                <Label htmlFor="notes">Notlar</Label>
                 <Textarea id="notes" name="notes" />
               </div>
               <Button type="submit" className="w-full">
-                Add Customer
+                Müşteri Ekle
               </Button>
             </form>
           </DialogContent>
@@ -122,7 +122,7 @@ export default function Customers() {
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search customers..."
+              placeholder="Müşteri ara..."
               className="pl-8"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -136,10 +136,10 @@ export default function Customers() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Contact</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Notes</TableHead>
+                <TableHead>Ad Soyad</TableHead>
+                <TableHead>İletişim</TableHead>
+                <TableHead>Oluşturulma</TableHead>
+                <TableHead>Notlar</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -168,7 +168,7 @@ export default function Customers() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {format(new Date(customer.createdAt), "MMM d, yyyy")}
+                    {format(new Date(customer.createdAt), "d MMMM yyyy")}
                   </TableCell>
                   <TableCell className="max-w-[300px] truncate">
                     {customer.notes}

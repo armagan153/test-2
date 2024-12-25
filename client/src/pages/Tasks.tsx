@@ -61,21 +61,21 @@ export default function Tasks() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("Failed to create task");
+      if (!response.ok) throw new Error("Görev oluşturulamadı");
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
       setIsOpen(false);
       toast({
-        title: "Success",
-        description: "Task created successfully",
+        title: "Başarılı",
+        description: "Görev başarıyla oluşturuldu",
       });
     },
     onError: (error: Error) => {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Hata",
         description: error.message,
       });
     },
@@ -88,20 +88,20 @@ export default function Tasks() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
-      if (!response.ok) throw new Error("Failed to update task");
+      if (!response.ok) throw new Error("Görev güncellenemedi");
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/tasks"] });
       toast({
-        title: "Success",
-        description: "Task status updated",
+        title: "Başarılı",
+        description: "Görev durumu güncellendi",
       });
     },
     onError: (error: Error) => {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Hata",
         description: error.message,
       });
     },
@@ -111,7 +111,7 @@ export default function Tasks() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const dueDate = formData.get("dueDate") as string;
-    
+
     addTask.mutate({
       title: formData.get("title") as string,
       description: formData.get("description") as string,
@@ -125,32 +125,32 @@ export default function Tasks() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Tasks</h1>
+        <h1 className="text-2xl font-bold">Görevler</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button>
               <ListTodo className="h-4 w-4 mr-2" />
-              Create Task
+              Görev Oluştur
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Create New Task</DialogTitle>
+              <DialogTitle>Yeni Görev Oluştur</DialogTitle>
             </DialogHeader>
             <form onSubmit={onSubmit} className="space-y-4">
               <div>
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title">Başlık</Label>
                 <Input id="title" name="title" required />
               </div>
               <div>
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">Açıklama</Label>
                 <Textarea id="description" name="description" />
               </div>
               <div>
-                <Label htmlFor="customerId">Related Customer</Label>
+                <Label htmlFor="customerId">İlgili Müşteri</Label>
                 <Select name="customerId">
                   <SelectTrigger>
-                    <SelectValue placeholder="Select customer" />
+                    <SelectValue placeholder="Müşteri seçin" />
                   </SelectTrigger>
                   <SelectContent>
                     {customers?.map((customer) => (
@@ -162,11 +162,11 @@ export default function Tasks() {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="dueDate">Due Date</Label>
+                <Label htmlFor="dueDate">Bitiş Tarihi</Label>
                 <Input id="dueDate" name="dueDate" type="date" />
               </div>
               <Button type="submit" className="w-full">
-                Create Task
+                Görev Oluştur
               </Button>
             </form>
           </DialogContent>
@@ -178,11 +178,11 @@ export default function Tasks() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead>Due Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>Başlık</TableHead>
+                <TableHead>Atanan Kişi</TableHead>
+                <TableHead>Bitiş Tarihi</TableHead>
+                <TableHead>Durum</TableHead>
+                <TableHead>İşlemler</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -226,12 +226,12 @@ export default function Tasks() {
                       }
                     >
                       <SelectTrigger className="w-[140px]">
-                        <SelectValue placeholder="Update status" />
+                        <SelectValue placeholder="Durumu güncelle" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="in_progress">In Progress</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
+                        <SelectItem value="pending">Beklemede</SelectItem>
+                        <SelectItem value="in_progress">Devam Ediyor</SelectItem>
+                        <SelectItem value="completed">Tamamlandı</SelectItem>
                       </SelectContent>
                     </Select>
                   </TableCell>

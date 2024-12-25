@@ -11,8 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 const formSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  username: z.string().min(3, "Kullanıcı adı en az 3 karakter olmalıdır"),
+  password: z.string().min(6, "Şifre en az 6 karakter olmalıdır"),
 });
 
 export default function AuthPage() {
@@ -36,13 +36,13 @@ export default function AuthPage() {
         throw new Error(result.message);
       }
       toast({
-        title: isRegister ? "Registration successful" : "Login successful",
-        description: `Welcome, ${values.username}!`,
+        title: isRegister ? "Kayıt başarılı" : "Giriş başarılı",
+        description: `Hoş geldiniz, ${values.username}!`,
       });
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Hata",
         description: error.message,
       });
     } finally {
@@ -54,13 +54,13 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Call Center CRM</CardTitle>
+          <CardTitle className="text-2xl text-center">Çağrı Merkezi CRM</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login">
             <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="login">Login</TabsTrigger>
-              <TabsTrigger value="register">Register</TabsTrigger>
+              <TabsTrigger value="login">Giriş</TabsTrigger>
+              <TabsTrigger value="register">Kayıt</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login">
@@ -72,7 +72,7 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>Kullanıcı Adı</FormLabel>
                           <FormControl>
                             <Input {...field} disabled={isLoading} />
                           </FormControl>
@@ -85,7 +85,7 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Şifre</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} disabled={isLoading} />
                           </FormControl>
@@ -94,7 +94,7 @@ export default function AuthPage() {
                       )}
                     />
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Loading..." : "Login"}
+                      {isLoading ? "Yükleniyor..." : "Giriş Yap"}
                     </Button>
                   </div>
                 </form>
@@ -110,7 +110,7 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>Kullanıcı Adı</FormLabel>
                           <FormControl>
                             <Input {...field} disabled={isLoading} />
                           </FormControl>
@@ -123,7 +123,7 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>Şifre</FormLabel>
                           <FormControl>
                             <Input type="password" {...field} disabled={isLoading} />
                           </FormControl>
@@ -132,7 +132,7 @@ export default function AuthPage() {
                       )}
                     />
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                      {isLoading ? "Loading..." : "Register"}
+                      {isLoading ? "Yükleniyor..." : "Kayıt Ol"}
                     </Button>
                   </div>
                 </form>
